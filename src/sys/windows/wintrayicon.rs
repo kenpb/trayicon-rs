@@ -294,6 +294,20 @@ where
         }
         Ok(())
     }
+
+    /// Show the menu
+    fn show_menu(&mut self) -> Result<(), Error> {
+        // Show menu, if it's there
+        if let Some(menu) = &self.menu {
+            let mut pos = POINT { x: 0, y: 0 };
+            unsafe {
+                winuser::GetCursorPos(&mut pos as _);
+                winuser::SetForegroundWindow(self.hwnd);
+            }
+            menu.menu.track(self.hwnd, pos.x, pos.y);
+        }
+        Ok(())
+    }
 }
 
 impl<T> Drop for WinTrayIconImpl<T>
